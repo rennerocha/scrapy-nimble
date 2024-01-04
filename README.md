@@ -71,3 +71,24 @@ option name such as:
       }
    )
    ```
+
+## Development
+
+We suggest the use of [pyenv](https://github.com/pyenv/pyenv) to manage your Python version and create an isolated
+environment where you can safely develop. After installing it, you can prepare the environment using the following
+commands:
+
+   ```bash
+   $ pyenv virtualenv 3.11.6 myvenv
+   $ pyenv activate myvenv
+   $ python -m pip install -e .
+   ```
+
+To keep a standard in code formatting and do some linter checks, we use [pre-commit hooks](https://pre-commit.com/).
+[Install](https://pre-commit.com/#installation) `pre-commit` package and install the project hooks using:
+
+   ```bash
+   $ pre-commit install
+   ```
+
+Now you are ready to start development.

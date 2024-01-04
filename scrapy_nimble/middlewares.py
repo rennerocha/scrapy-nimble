@@ -35,6 +35,16 @@ class NimbleWebApiMiddleware:
         data = {
             "url": request.url,
         }
+
+        if "nimble_country" in request.meta:
+            data["country"] = request.meta["nimble_country"]
+
+        if "nimble_locale" in request.meta:
+            data["locale"] = request.meta["nimble_locale"]
+
+        if "nimble_render" in request.meta:
+            data["render"] = request.meta["nimble_render"]
+
         return JsonRequest(
             self._webapi_url,
             method="POST",
@@ -49,6 +59,10 @@ class NimbleWebApiMiddleware:
             return response
 
         nimble_response = response.json()
+
+        if nimble_response["status"] == "failed":
+            return response
+
         new_response = response.replace(
             url=nimble_response["input_url"],
             status=nimble_response["status_code"],

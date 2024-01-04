@@ -39,7 +39,35 @@ pip install scrapy-nimble
    (it is enabled by default in [DOWNLOADER_MIDDLEWARES_BASE](https://docs.scrapy.org/en/latest/topics/settings.html#std-setting-DOWNLOADER_MIDDLEWARES_BASE)
    setting with default order equal to 590), configure `scrapy-nimble` middleware **before** it.
 
-## Usage
+## Basic Usage
 
 Once the downloader middleware is properly configured, every request goes through the Nimble's Web API.
 There is no need to change anything in your spider's code.
+
+## Real-time URL request
+
+`scrapy-nimble` uses [Nimble Web API](https://docs.nimbleway.com/data-platform/web-api) with Real-time URL
+requests. In addition to the default GET request for a specific URL, this API provides some extra options
+that allow you to execute geolocated requests, render dynamic content, among others.
+
+Right now the following [request options](https://docs.nimbleway.com/data-platform/web-api/real-time-url-request#request-options) can be used. Check the documentation for usage and the valid values that can be provided.
+If the option is not given, the default value from Web API will be used.
+
+- `country`
+- `locale`
+- `render`
+
+Add the options you want to be used inside the `meta` key of your request, appending `nimble_` to the
+option name such as:
+
+   ```python
+   # Inside your spider
+   yield scrapy.Request(
+      "https://nimbleway.com",
+      meta={
+         "nimble_country": "DE",
+         "nimble_locale": "uk",
+         "nimble_render": True,
+      }
+   )
+   ```

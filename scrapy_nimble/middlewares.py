@@ -1,5 +1,6 @@
 import base64
 
+from scrapy.exceptions import NotConfigured
 from scrapy.http import JsonRequest
 
 
@@ -15,8 +16,16 @@ class NimbleWebApiMiddleware:
     @classmethod
     def from_crawler(cls, crawler):
         enabled = crawler.settings.getbool("NIMBLE_ENABLED")
-        username = crawler.settings.get("NIMBLE_USERNAME") or ""
-        password = crawler.settings.get("NIMBLE_PASSWORD") or ""
+        if not enabled:
+            raise NotConfigured("Missing NIMBLE_ENABLED setting.")
+
+        username = crawler.settings.get("NIMBLE_USERNAME")
+        if username is None:
+            raise NotConfigured("Missing NIMBLE_USERNAME setting.")
+
+        password = crawler.settings.get("NIMBLE_PASSWORD")
+        if password is None:
+            raise NotConfigured("Missing NIMBLE_PASSWORD setting.")
 
         return cls(enabled=enabled, username=username, password=password)
 

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scrapy-nimble"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Renne Rocha", email="renne@rocha.dev.br" },
 ]

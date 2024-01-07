@@ -25,6 +25,11 @@ dependencies = [
   "scrapy"
 ]
 
+[project.optional-dependencies]
+test = [
+  "pytest"
+]
+
 [project.urls]
 Homepage = "https://github.com/rennerocha/scrapy-nimble"
 Issues = "https://github.com/rennerocha/scrapy-nimble/issues"

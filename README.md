@@ -53,9 +53,13 @@ that allow you to execute geolocated requests, render dynamic content, among oth
 Right now the following [request options](https://docs.nimbleway.com/data-platform/web-api/real-time-url-request#request-options) can be used. Check the documentation for usage and the valid values that can be provided.
 If the option is not given, the default value from Web API will be used.
 
+- `method`
 - `country`
 - `locale`
+- `headers`
+- `cookies`
 - `render`
+- `render_options`
 
 Add the options you want to be used inside the `meta` key of your request, appending `nimble_` to the
 option name such as:

@@ -29,6 +29,28 @@ class NimbleWebApiMiddleware:
 
         return cls(enabled=enabled, username=username, password=password)
 
+    def _get_request_options(self, request):
+        # https://docs.nimbleway.com/data-platform/web-api/real-time-url-request#request-options
+        request_options = {
+            "url": request.url,
+        }
+
+        optional = [
+            "method",
+            "country",
+            "locale",
+            "headers",
+            "cookies",
+            "render",
+            "render_options",
+        ]
+        for option in optional:
+            key = f"nimble_{option}"
+            if key in request.meta:
+                request_options[option] = request.meta[key]
+
+        return request_options
+
     def process_request(self, request, spider):
         if not self._enabled:
             return
@@ -41,23 +63,13 @@ class NimbleWebApiMiddleware:
             "Content-Type": "application/json",
             "X-Nimble-Request": 1,
         }
-        data = {
-            "url": request.url,
-        }
 
-        if "nimble_country" in request.meta:
-            data["country"] = request.meta["nimble_country"]
-
-        if "nimble_locale" in request.meta:
-            data["locale"] = request.meta["nimble_locale"]
-
-        if "nimble_render" in request.meta:
-            data["render"] = request.meta["nimble_render"]
+        request_data = self._get_request_options(request)
 
         return JsonRequest(
             self._webapi_url,
             method="POST",
-            data=data,
+            data=request_data,
             headers=headers,
             cb_kwargs=request.cb_kwargs,
             meta=request.meta,
